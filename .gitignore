@@ -1,0 +1,13 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+
+Dataset/
+Docs/
+vigilant-vision/
+*/.rar
+Crowd Control/Crowd Control/CC/
+Crowd Control/Model 12 (working 1)/
+Crowd Control/yolo cc2/
+Mask/yolo11_flask_app/mask/
+Queue Mngmnt/QM/
+Smoke/Smoke/

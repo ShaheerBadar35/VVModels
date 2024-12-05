@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webcam Feed</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Full viewport height */
+            margin: 0; /* Remove default margin */
+            background-color: #f0f0f0; /* Optional background color */
+        }
+        img {
+            width: 1020px; /* Set webcam feed width */
+            height: 600px; /* Set webcam feed height */
+            border: 2px solid #ccc; /* Optional border */
+            border-radius: 8px; /* Optional rounded corners */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional shadow */
+        }
+        a {
+            margin-top: 20px; /* Space above the back link */
+            text-decoration: none;
+            color: #007bff; /* Link color */
+            font-size: 18px; /* Font size */
+        }
+        a:hover {
+            text-decoration: underline; /* Underline on hover */
+        }
+    </style>
+</head>
+<body>
+    <h1>Webcam Object Detection</h1>
+    <div style="text-align: center;">
+        <img src="{{ url_for('webcam_feed') }}" />
+    </div>
+    <a href="/">Back to Home</a>
+</body>
+</html>

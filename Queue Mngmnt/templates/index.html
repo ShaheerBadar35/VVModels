@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Queue Detection</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Queue Detection in Video</h1>
+    <form id="upload-form" enctype="multipart/form-data">
+        <input type="file" name="file" id="file-input" accept="video/*" required>
+        <button type="submit">Upload and Predict</button>
+    </form>
+    <h3>Prediction Result:</h3>
+    <pre id="predictions"></pre>
+
+    <script>
+        $(document).ready(function() {
+            $('#upload-form').on('submit', function(event) {
+                event.preventDefault();
+                let formData = new FormData(this);
+                $.ajax({
+                    url: '/predict',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(data) {
+                        let message = data.queue_detected ? "Queue detected!" : "No queue detected.";
+                        $('#predictions').text(message);
+                    },
+                    error: function(err) {
+                        alert('Error: ' + err.responseJSON.error);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

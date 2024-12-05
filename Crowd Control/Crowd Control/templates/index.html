@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Processor</title>
+</head>
+<body>
+    <h1>Upload Video or Use Webcam for Processing</h1>
+    
+    <h2>Upload Video</h2>
+    <form id="uploadForm" enctype="multipart/form-data">
+        <input type="file" name="file" accept="video/*" required>
+        <button type="submit">Upload</button>
+    </form>
+    <p id="uploadStatus"></p>
+    <p id="uploadDetections"></p>
+    <a id="uploadDownloadLink" style="display: none;">Download Processed Video</a>
+
+    <h2>Use Webcam</h2>
+    <button id="startWebcam">Start Webcam Processing</button>
+    <p id="webcamStatus"></p>
+    <p id="webcamDetections"></p>
+
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const status = document.getElementById('uploadStatus');
+            const detections = document.getElementById('uploadDetections');
+            const downloadLink = document.getElementById('uploadDownloadLink');
+
+            status.textContent = 'Uploading and processing...';
+            detections.textContent = '';
+            downloadLink.style.display = 'none';
+
+            try {
+                const response = await fetch('/upload', {
+                    method: 'POST',
+                    body: formData,
+                });
+                const result = await response.json();
+
+                if (response.ok) {
+                    status.textContent = result.message;
+                    detections.textContent = `Total people detected: ${result.total_detections}`;
+                    downloadLink.href = result.download_link;
+                    downloadLink.style.display = 'inline';
+                    downloadLink.textContent = 'Download Processed Video';
+                } else {
+                    status.textContent = `Error: ${result.error}`;
+                }
+            } catch (error) {
+                status.textContent = `Error: ${error.message}`;
+            }
+        });
+
+        document.getElementById('startWebcam').addEventListener('click', async () => {
+            const status = document.getElementById('webcamStatus');
+            const detections = document.getElementById('webcamDetections');
+
+            status.textContent = 'Processing live webcam feed...';
+            detections.textContent = '';
+
+            try {
+                const response = await fetch('/webcam');
+                const result = await response.json();
+
+                if (response.ok) {
+                    status.textContent = result.message;
+                    detections.textContent = `Total people detected: ${result.total_detections}`;
+                } else {
+                    status.textContent = `Error: ${result.error}`;
+                }
+            } catch (error) {
+                status.textContent = `Error: ${error.message}`;
+            }
+        });
+    </script>
+</body>
+</html>
